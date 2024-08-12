@@ -21,3 +21,4 @@ pool.query('SELECT * FROM your_table', (error, results, fields) => {
 
 // Close the connection pool when done
 pool.end();
+hello world;
