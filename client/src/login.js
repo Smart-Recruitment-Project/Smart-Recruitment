@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './login.css'
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -30,13 +31,14 @@ function LoginForm() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
+    <body>
+      <h2>Sign in</h2>
+      <form onSubmit={handleSubmit} class="signin-box">
+        <div class="inputs">
           <label>Email:</label>
           <input
             type="email"
+            placeholder="Enter Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -46,6 +48,7 @@ function LoginForm() {
           <label>Password:</label>
           <input
             type="password"
+            placeholder='Enter Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -53,8 +56,9 @@ function LoginForm() {
         </div>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <button type="submit">Login</button>
+        <a href='#'>Forgot Password?</a>
       </form>
-    </div>
+    </body>
   );
 }
 
