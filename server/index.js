@@ -1,23 +1,22 @@
-const mysql = require('mysql');
+const express = require('express');
+const app = express();
+const mysql = require('mysql2');
+const cors = require('cors');
+const db = require('./db/Connection');
+const router = require('./Routes/router');
+const port = 8000;
 
-// Create a connection pool
-const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'your_username',
-    password: 'your_password',
-    database: 'your_database'
-});
 
-// Execute a query
-pool.query('SELECT * FROM your_table', (error, results, fields) => {
-    if (error) {
-        console.error('Error executing query:', error);
-        return;
-    }
+//miidleware
+app.use(express.json());
+app.use(cors());
+app.use(router);
 
-    // Process the query results
-    console.log('Query results:', results);
-});
 
-// Close the connection pool when done
-pool.end();
+/*app.get('/', (req, res) => {
+  res.send('Hello World!');
+});*/
+  
+app.listen(port, () => {    
+  console.log(`Server is running on port ${port}`);
+}); 
