@@ -54,7 +54,7 @@ function LoginForm() {
           />
         </div>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <a href='#'>Forgot Password?</a>
+        <a href='/forgot'>Forgot Password?</a>
         <button type="submit">Login</button>
       </form>
       </div>
