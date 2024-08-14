@@ -1,11 +1,17 @@
-import React from 'react'
-
-import LoginForm from './login';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import LoginForm from './login.js';
+import RegistrationForm from './registration.js';
 
 function App() {
   return (
-    <div className="App">
-      <LoginForm/>
+    <div>
+      <BrowserRouter> 
+        <Routes>
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/registration" element={<RegistrationForm />} />
+        </Routes> 
+      </BrowserRouter>
     </div>
   );
 }
