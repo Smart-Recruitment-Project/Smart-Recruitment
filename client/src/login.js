@@ -32,10 +32,10 @@ function LoginForm() {
 
   return (
     <body>
-      <h2>Sign in</h2>
+      <div class="contents">
       <form onSubmit={handleSubmit} class="signin-box">
+        <h2>Sign in</h2>
         <div class="inputs">
-          {/* <label>Email:</label> */}
           <input
             type="email"
             placeholder="Enter Email"
@@ -45,7 +45,6 @@ function LoginForm() {
           />
         </div>
         <div class="inputs">
-          {/* <label>Password:</label> */}
           <input
             type="password"
             placeholder='Enter Password'
@@ -55,9 +54,10 @@ function LoginForm() {
           />
         </div>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Login</button>
         <a href='#'>Forgot Password?</a>
+        <button type="submit">Login</button>
       </form>
+      </div>
     </body>
   );
 }
