@@ -35,7 +35,7 @@ function LoginForm() {
       <h2>Sign in</h2>
       <form onSubmit={handleSubmit} class="signin-box">
         <div class="inputs">
-          <label>Email:</label>
+          {/* <label>Email:</label> */}
           <input
             type="email"
             placeholder="Enter Email"
@@ -44,8 +44,8 @@ function LoginForm() {
             required
           />
         </div>
-        <div>
-          <label>Password:</label>
+        <div class="inputs">
+          {/* <label>Password:</label> */}
           <input
             type="password"
             placeholder='Enter Password'
