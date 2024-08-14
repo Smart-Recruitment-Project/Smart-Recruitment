@@ -9,7 +9,7 @@ function App() {
       <BrowserRouter> 
         <Routes>
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/registration" element={<RegistrationForm />} />
+          <Route path="/signup" element={<RegistrationForm />} />
         </Routes> 
       </BrowserRouter>
     </div>
