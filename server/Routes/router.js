@@ -57,20 +57,20 @@ router.post('/login', async (req,res) => {
         };
         let user = await checkUser('student');
         if (user) {
-            const isMatch = await bcrypt.compare(Password, user.Password);
+            const isMatch = (Password==user.Password);
             if (!isMatch) return res.status(422).json({ error: "Invalid Email or Password" });
             return res.status(200).json({ message: "Login Successful", redirect: "/student-dashboard" });
         }
         user = await checkUser('employee');
         if (user) {
-            const isMatch = await bcrypt.compare(Password, user.Password);
+            const isMatch = (Password==user.Password);
             if (!isMatch) return res.status(422).json({ error: "Invalid Email or Password" });
             return res.status(200).json({ message: "Login Successful", redirect: "/employee-dashboard" });
         }
 
         user = await checkUser('company');
         if (user) {
-            const isMatch = await bcrypt.compare(Password, user.Password);
+            const isMatch = (Password==user.Password);
             if (!isMatch) return res.status(422).json({ error: "Invalid Email or Password" });
             return res.status(200).json({ message: "Login Successful", redirect: "/company-dashboard" });
         }
