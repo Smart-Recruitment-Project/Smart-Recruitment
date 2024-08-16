@@ -31,14 +31,15 @@ function LoginForm() {
   };
 
   return (
-    <body>
+    <body class="Body">
       <div class="contents">
       <form onSubmit={handleSubmit} class="signin-box">
-        <h2>Sign in</h2>
+        <h2 class="heading">Sign in</h2>
         <div class="inputs">
           <input
             type="email"
             placeholder="Enter Email"
+            class="input"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -48,14 +49,15 @@ function LoginForm() {
           <input
             type="password"
             placeholder='Enter Password'
+            class="input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <a href='/forgot'>Forgot Password?</a>
-        <button type="submit">Login</button>
+        <a href='/forgot' class="link">Forgot Password?</a>
+        <button type="submit" class="btn">Login</button>
       </form>
       </div>
     </body>
