@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './login.css'
+import logo from './images/logo.png';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -31,34 +31,58 @@ function LoginForm() {
   };
 
   return (
-    <body class="Body">
-      <div class="contents">
-      <form onSubmit={handleSubmit} class="signin-box">
-        <h2 class="heading">Sign in</h2>
-        <div class="inputs">
-          <input
-            type="email"
-            placeholder="Enter Email"
-            class="input"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+    <body class="flex bg-slate-900 h-screen min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+          <img
+            alt="Your Company"
+            src={logo}
+            className="mx-auto h-16 w-auto"
           />
-        </div>
-        <div class="inputs">
-          <input
-            type="password"
-            placeholder='Enter Password'
-            class="input"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <a href='/forgot' class="link">Forgot Password?</a>
-        <button type="submit" class="btn">Login</button>
-      </form>
+          <h2 className="mt-50 text-center text-2xl font-bold leading-9 tracking-tight text-white">
+            Sign in to your account
+          </h2>       
+        <form onSubmit={handleSubmit} class="signin-box">
+          <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
+              Email address
+            </label>
+            <input
+              type="email"
+              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-2"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div class="mt-4">
+            <div class="flex items-center justify-between">
+              <label htmlFor="password" className="block text-sm font-medium leading-6 text-white">
+                Password
+              </label>
+              <div className="text-sm">
+                <a href="./forgot.js" className="font-semibold text-yellow-400 hover:text-red-400">
+                  Forgot password?
+                </a>
+              </div>
+            </div>
+            <input
+              type="password"
+              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mt-2"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <div>
+              <button
+                type="submit"
+                className="flex w-full justify-center rounded-md bg-yellow-400 px-3 py-1.5 text-sm font-semibold leading-6 text-slate-900 hover:shadow-lg hover:bg-red-800 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-800 mt-7"
+              >
+                Sign in
+              </button>
+            </div>
+        </form>
       </div>
     </body>
   );

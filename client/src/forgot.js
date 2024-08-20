@@ -2,6 +2,6 @@ import React from 'react'
 
 export default function Forgot() {
   return (
-    <div>forgot</div>
+    <div class="text-black">forgot</div>
   )
 }
