@@ -11,13 +11,13 @@ function LoginForm() {
     e.preventDefault();
     setError('');
 
-    console.log('Email:', email);
-    console.log('Password:', password);
+    console.log('email:', email);
+    console.log('password:', password);
 
     try {
       const response = await axios.post('http://localhost:8000/login', {
-        Email: email,
-        Password: password,
+        email: email,
+        password: password,
       });
       console.log(response.data);
       // Handle successful login, e.g., redirect to dashboard

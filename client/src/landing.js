@@ -25,8 +25,8 @@ export default function Landing() {
                         <h1 class="p-3">Campus</h1>
                         <h1 class="p-3">Recruitment</h1>
                         <div class="flex flex-row justify-between m-7 ml-0">
-                            <button class="text-base w-36 border border-yellow-400 text-yellow-400 p-2 pl-5 pr-5 rounded-2xl bg-slate-900 hover:bg-yellow-400 hover:text-black hover:scale-125 transition duration-300 hover:ease-in-out hover:shadow-lg hover:shadow-yellow-400/30">Sign in</button>                    
-                            <button class="text-base w-36 border border-yellow-400 text-yellow-400 p-2 pl-5 pr-5 rounded-2xl bg-slate-900 hover:bg-yellow-400 hover:text-black hover:scale-125 transition duration-300 hover:ease-in-out hover:shadow-lg hover:shadow-yellow-400/20">Sign up</button>                    
+                            <button class="text-base w-36 border border-yellow-400 text-yellow-400 p-2 pl-5 pr-5 rounded-2xl bg-slate-900 hover:bg-yellow-400 hover:text-black hover:scale-125 transition duration-300 hover:ease-in-out hover:shadow-lg hover:shadow-yellow-400/30" onClick={() => window.location.href = '/login'}>Sign in</button>                    
+                            <button class="text-base w-36 border border-yellow-400 text-yellow-400 p-2 pl-5 pr-5 rounded-2xl bg-slate-900 hover:bg-yellow-400 hover:text-black hover:scale-125 transition duration-300 hover:ease-in-out hover:shadow-lg hover:shadow-yellow-400/20"onClick={() => window.location.href = '/signup'}>Sign up</button>                    
                         </div>
                     </div>
                     <div class="h-screen mr-5">     
