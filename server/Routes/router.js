@@ -19,7 +19,6 @@ router.post('/register', (req, res) => {
         if (results.length > 0) {
             return res.status(422).json({ error: "Email already exists" });
         } else {
-            // Consider hashing the password here before storing
             conn.query('INSERT INTO users SET ?', { Username, Email, Password, role }, (error, results) => {
                 if (error) {
                     console.log(error);
@@ -89,6 +88,7 @@ router.post('/login', async (req, res) => {
             if (error) {
                 return res.status(500).json({ error: "Database error" });
             }
+            const username=results[0].username;
             if (results.length > 0) {
                 if (password === results[0].password) {
                     conn.query('SELECT role FROM users WHERE email = ?', [email], (error, results) => {
@@ -99,14 +99,16 @@ router.post('/login', async (req, res) => {
                             return res.status(422).json({ error: "Invalid Email or Password" });
                         }
                         const role = results[0].role;
+                        
+                        console.log(results);
                         if (role === 'Admin') {
-                            return res.status(200).json({ message: "Login Successful", redirect: "/admin-dashboard" });
+                            return res.status(200).json({ message: "Login Successful", redirect: "/admin-dashboard" ,username:username});
                         } else if (role === 'Student') {
-                            return res.status(200).json({ message: "Login Successful", redirect: "/student-dashboard" });
+                            return res.status(200).json({ message: "Login Successful", redirect: "/student-dashboard" ,username:username });
                         } else if (role === 'CollegeEmployee') {
-                            return res.status(200).json({ message: "Login Successful", redirect: "/employee-dashboard" });
+                            return res.status(200).json({ message: "Login Successful", redirect: "/employee-dashboard" ,username:username });
                         } else {
-                            return res.status(200).json({ message: "Login Successful", redirect: "/company-dashboard" });
+                            return res.status(200).json({ message: "Login Successful", redirect: "/company-dashboard" ,username:username });
                         }
                     });
                 } else {

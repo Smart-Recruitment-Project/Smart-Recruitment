@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LoginForm from './login.js';
-import Forgot from './forgot.js';
-import RegistrationForm from './registration.js';
+import LoginForm from './login_signup/login.js';
+import Forgot from './login_signup/forgot.js';
+import RegistrationForm from './login_signup/registration.js';
 import SDashboard from './Student/components/SDashborad.js';
 import Landing from './landing.js';
-import Addsignup from './addregistration.js';
-import Index from './index.css';
+import Addsignup from './login_signup/addregistration.js';
+import './index.css';
 function App() {
   return (
     <div>
@@ -17,7 +17,7 @@ function App() {
           <Route path="/forgot" element={<Forgot/>}/>
           <Route path="/signup" element={<RegistrationForm />} />
           <Route path="/addRegistration" element={<Addsignup/>} />
-          <Route path="/SDashboard" element={<SDashboard />} /> 
+          <Route path="/student-dashboard" element={<SDashboard/>} /> 
         </Routes> 
       </BrowserRouter>
     </div>

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import logo from './images/logo.png';
+import logo from '../images/logo.png';
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,8 +21,14 @@ function LoginForm() {
         email: email,
         password: password,
       });
-      console.log(response.data);
-      // Handle successful login, e.g., redirect to dashboard
+      if (response.status === 200) {
+        alert(response.data.message);
+        const username = response.data.username;
+        alert(username);
+        navigate(response.data.redirect + `?username=${username}`);
+    } else {
+        alert(response.data.error);
+    }
     } catch (err) {
       if (err.response && err.response.status === 422) {
         setError(err.response.data.error);

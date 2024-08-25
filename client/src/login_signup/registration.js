@@ -34,13 +34,14 @@ const Registration = () => {
   
     const role = "Student";
     const { username, email, password } = formData;
+    
   
     try {
       const response = await axios.post("http://localhost:8000/register", {
         Username: username,
         Email: email,
         Password: password,
-        role,
+        role:role,
       });
       if (response.status === 200) {
         alert(response.data.message);
