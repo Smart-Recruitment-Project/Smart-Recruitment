@@ -1,7 +1,8 @@
 import React from 'react'
+import FeedItem from '../components/FeedItem'
 
 export default function  feed() {
   return (
-    <div> feedssss </div>
+    <div> <FeedItem/> </div>
   )
 }
