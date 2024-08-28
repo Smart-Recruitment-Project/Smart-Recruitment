@@ -137,4 +137,46 @@ router.get('/colleges', (req, res) => {
     });
 });
 
+
+
+//get all feeds
+
+router.get('/feeds', (req, res) => {
+    conn.query('SELECT * FROM feeds', (error, results) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: "Database error" });
+        }
+
+        const employeeIds = results.map(feed => feed.employee_id);
+        const dataPromises = results.map((feed, index) => {
+            return new Promise((resolve, reject) => {
+                conn.query('SELECT name FROM collegeemployees WHERE employee_id = ?', [employeeIds[index]], (error, employees) => {
+                    if (error) {
+                        console.log(error);
+                        return reject({ error: "Database error" });
+                    }
+                    resolve({
+                        avatarUrl: '',
+                        employeeName: employees[0].name,
+                        headline: feed.feed_headline,
+                        content: feed.feed_content,
+                        time: feed.feed_date
+                    });
+                });
+            });
+        });
+
+        Promise.all(dataPromises)
+            .then(data => {
+                console.log(Array.isArray(data));
+                return res.status(200).json({ feeds: data });
+            })
+            .catch(error => {
+                console.error(error);
+                return res.status(500).json({ error: "Database error" });
+            });
+    });
+});
+
 module.exports = router;

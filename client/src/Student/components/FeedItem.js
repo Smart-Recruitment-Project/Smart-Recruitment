@@ -1,6 +1,8 @@
 import React from 'react';
-//import {useState} from 'react';
-
+//import axios from 'axios';
+//import {useState,useEffect} from 'react';
+//const BPORT=process.env.REACT_APP_BPORT||8000;
+//const FPORT=process.env.REACT_APP_FPORT||3000;
 
 function FeedItem({ avatarUrl, employeeName, headline, content, time }) {
     return (
@@ -22,42 +24,38 @@ function FeedItem({ avatarUrl, employeeName, headline, content, time }) {
 function FeedContainer({ feedData }) {
     return (
         <div className="max-w-xl mx-auto">
-            {feedData.map((item, index) => (
-                <FeedItem
-                    key={index}
-                    avatarUrl={item.avatarUrl}
-                    employeeName={item.employeeName}
-                    headline={item.headline}
-                    content={item.content}
-                    time={item.time}
-                />
-            ))}
+            {Array.isArray(feedData) ? (
+                feedData.map((item, index) => (
+                    <div key={index}>
+                        <FeedItem 
+                        key={index}
+                        avatarUrl={item.avatarUrl}
+                        employeeName={item.employeeName}
+                        headline={item.headline}
+                        content={item.content}
+                        time={item.time}/>
+                    </div>
+                ))
+            ) : (    
+            <div>No data available</div>
+            )}
         </div>
     );
 }
 
 
-
-// usisg duumy data
-
-const sampleFeedData = [{
-        avatarUrl: '',
-        employeeName: 'John Doe',
-        headline: 'Upcoming Exam Schedule',
-        content: 'The exam schedule for the upcoming semester has been released. Please check the portal for details.',
-        time: '2 hours ago',
-},
-];
-
-  
 function App() {
     /*const [data,setData]=useState([]);
-
     useEffect(()=>{
         const fetchData=async()=>{
-
-
-
+            try{
+                const response=await axios.get(`http://localhost:${BPORT}/feeds`);
+                setData(response.data.feeds);
+            }catch(error){
+                console.log(error);
+            }
+        };fetchData()
+    },[]);*/
 
     const sampleFeedData = [
         {
@@ -88,7 +86,6 @@ function App() {
         }
     
       ];
-*/
     return (
         <div>
             <FeedContainer feedData={sampleFeedData} />
