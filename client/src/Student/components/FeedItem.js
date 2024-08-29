@@ -4,7 +4,7 @@ import React from 'react';
 
 function FeedItem({ avatarUrl, employeeName, headline, content, time }) {
     return (
-        <div className="flex bg-white rounded-lg shadow-md p-4 mb-4 items-center">
+        <div className="flex bg-white rounded-lg shadow-md p-4 m-4 items-center">
             <div
                 className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-300 mr-4"
                 style={{ backgroundImage: `url(${avatarUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
@@ -21,7 +21,7 @@ function FeedItem({ avatarUrl, employeeName, headline, content, time }) {
 
 function FeedContainer({ feedData }) {
     return (
-        <div className="max-w-xl mx-auto">
+        <div className="max-w-2xl mx-auto">
             {feedData.map((item, index) => (
                 <FeedItem
                     key={index}

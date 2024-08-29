@@ -56,13 +56,13 @@ const Registration = () => {
 
   return (
     <div className="bg-slate-900 px-6 py-12 lg:px-8">
-      <div className="max-w-md mx-auto mt-10 p-6">
-        <h2 className="text-2xl font-bold text-center mb-6">
+      <div className="max-w-md mx-auto p-6">
+        <h2 className="text-2xl font-bold text-center mb-6 text-white">
           Student Registration Form
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="username" className="block text-gray-700">
+            <label htmlFor="username" className="block text-gray-400 py-1">
               Username
             </label>
             <input
@@ -76,7 +76,7 @@ const Registration = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700">
+            <label htmlFor="email" className="block text-gray-400 py-1">
               Email
             </label>
             <input
@@ -90,7 +90,7 @@ const Registration = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700">
+            <label htmlFor="password" className="block text-gray-400 py-1">
               Password
             </label>
             <input
@@ -104,7 +104,7 @@ const Registration = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="Cpassword" className="block text-gray-700">
+            <label htmlFor="Cpassword" className="block text-gray-400 py-1">
               Confirm Password
             </label>
             <input
@@ -120,9 +120,9 @@ const Registration = () => {
           <div className="mb-4">
             <button
               type="submit"
-              className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              className="w-full px-4 py-2 mt-4 bg-yellow-400 text-slate-900 font-bold rounded-lg hover:bg-red-800 hover:text-white"
             >
-              Register
+              Next
             </button>
           </div>
         </form>

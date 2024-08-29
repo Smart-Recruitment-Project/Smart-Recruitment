@@ -17,12 +17,12 @@ export default function Dashboard() {
   };
 
   return (
-    <>
+    <div class="bg-slate-900">
       <Navbar title={selectedMenu} onLogout={handleLogout} />
-      <div className="dashboard bg-slate-900">
+      <div className="dashboard">
         <SideMenu onSelect={handleSelectMenu} />
         <MainContent selectedMenu={selectedMenu} />
       </div>
-    </>
+    </div>
   );
 }
