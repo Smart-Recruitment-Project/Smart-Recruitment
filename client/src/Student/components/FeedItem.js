@@ -1,6 +1,8 @@
 import React from 'react';
-//import {useState} from 'react';
-
+import axios from 'axios';
+import {useState,useEffect} from 'react';
+const BPORT=process.env.REACT_APP_BPORT||8000;
+//const FPORT=process.env.REACT_APP_FPORT||3000;
 
 function FeedItem({ avatarUrl, employeeName, headline, content, time }) {
     return (
@@ -21,7 +23,7 @@ function FeedItem({ avatarUrl, employeeName, headline, content, time }) {
 
 function FeedContainer({ feedData }) {
     return (
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-xl mx-auto">
             {feedData.map((item, index) => (
                 <FeedItem
                     key={index}
@@ -37,29 +39,20 @@ function FeedContainer({ feedData }) {
 }
 
 
-
-// usisg duumy data
-
-const sampleFeedData = [{
-        avatarUrl: '',
-        employeeName: 'John Doe',
-        headline: 'Upcoming Exam Schedule',
-        content: 'The exam schedule for the upcoming semester has been released. Please check the portal for details.',
-        time: '2 hours ago',
-},
-];
-
-  
 function App() {
-    /*const [data,setData]=useState([]);
-
+    const [data,setData]=useState([]);
     useEffect(()=>{
         const fetchData=async()=>{
+            try{
+                const response=await axios.get(`http://localhost:${BPORT}/feeds`);
+                setData(response.data.feeds);
+            }catch(error){
+                console.log(error);
+            }
+        };fetchData()
+    },[]);
 
-
-
-
-    const sampleFeedData = [
+    /*const sampleFeedData = [
         {
             avatarUrl: '',
             employeeName: 'John Doe',
@@ -88,10 +81,10 @@ function App() {
         }
     
       ];
-*/
+      */
     return (
         <div>
-            <FeedContainer feedData={sampleFeedData} />
+            <FeedContainer feedData={data} />
         </div>
     );
 }
