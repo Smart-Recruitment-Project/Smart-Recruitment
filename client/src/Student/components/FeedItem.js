@@ -12,7 +12,7 @@ function FeedItem({ avatarUrl, employeeName, headline, content, time }) {
                 style={{ backgroundImage: `url(${avatarUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
             ></div>
             <div className="flex-grow">
-                <div className="font-bold text-lg mb-1">{headline}</div>
+                <div className="font-bold text-black text-lg mb-1">{headline}</div>
                 <div className="text-sm text-gray-600 mb-2">{employeeName}</div>
                 <div className="text-sm text-gray-800">{content}</div>
             </div>

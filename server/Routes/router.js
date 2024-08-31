@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const conn = require('../db/Connection');
+const avatarUrl = 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200';
 
 
 
@@ -157,7 +158,7 @@ router.get('/feeds', (req, res) => {
                         return reject({ error: "Database error" });
                     }
                     resolve({
-                        avatarUrl: '',
+                        avatarUrl: avatarUrl,
                         employeeName: employees[0].name,
                         headline: feed.feed_headline,
                         content: feed.feed_content,
@@ -178,5 +179,79 @@ router.get('/feeds', (req, res) => {
             });
     });
 });
+
+//get all studnets cpga ,marks,skills
+router.get('/getstudentskills',(req,res)=>{
+    const username=req.body.username;
+    const query=`SELECT skills,12_marks,CGPA FROM students where username=?`;
+    conn.query(query,[username],(error,results)=>{
+        if(error){
+            console.log(error);
+            return res.status(500).json({error:"Database error"});
+        }
+        return res.status(200).json({skills:results});
+    });
+})
+
+
+
+//get all eligible companies
+router.get('/getcompanies', (req, res) => {
+    const cgpa = req.body.cgpa;
+    const skills = req.body.skills;
+    const marks = req.body.marks;
+    const array = skills.toLowerCase().split(/[\s,]+/).filter(Boolean); 
+    const skillConditions = array.map(skill => `skill LIKE '%${skill}%'`).join(' AND ');
+    console.log(skillConditions);
+    const query = `
+    SELECT company_id,job_title,job_description,posting_date,application_deadline FROM jobs 
+    WHERE CGPA <= ? 
+    AND 12_marks <= ? 
+    AND (${skillConditions})`;
+
+    conn.query(query,[cgpa,marks], (error, results) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: "Database error" });
+        }
+        if (results.length === 0) {
+            console.log("No companies found");
+            return res.status(200).json({ companies: [] });
+        }
+        
+        const eligibleJobs = results.filter(job => {
+            return array.every(skill => array.includes(skill));
+        });
+
+        if (eligibleJobs.length === 0) {
+            return res.status(200).json({ companies: [] });
+        }
+
+        const companyIds = eligibleJobs.map(job => job.company_id);
+        const companyQuery = 'SELECT company_id, company_name FROM companies WHERE company_id IN (?)';
+
+        conn.query(companyQuery, [companyIds], (error, companyResults) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ error: "Error fetching company names" });
+            }
+
+            const companyMap = companyResults.reduce((map, company) => {
+                map[company.company_id] = company.company_name;
+                return map;
+            }, {});
+
+            const changeResults = results.map(result => ({
+                ...result,
+                company_name: companyMap[result.company_id]
+            }));
+
+        return res.status(200).json({ companies: changeResults });
+    });
+});
+});
+
+
+
 
 module.exports = router;
