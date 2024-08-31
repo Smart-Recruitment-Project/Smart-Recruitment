@@ -40,7 +40,7 @@ function LoginForm() {
 
   return (
     <body class="flex bg-slate-900 h-screen min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm p-10 border border-yellow-300 shadow-md shadow-yellow-600">
           <img
             alt="Your Company"
             src={logo}
@@ -85,7 +85,7 @@ function LoginForm() {
           <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-yellow-400 px-3 py-1.5 text-sm font-bold leading-6 text-slate-900 hover:shadow-lg hover:bg-red-800 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-800 mt-7"
+                className="flex w-full justify-center rounded-md bg-yellow-400 px-3 py-1.5 text-sm font-bold leading-6 text-slate-900 hover:shadow-lg hover:bg-red-800 hover:text-white  mt-7 "
               >
                 Sign in
               </button>

@@ -17,7 +17,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div class="bg-slate-900">
+    <div class="bg-white">
       <Navbar title={selectedMenu} onLogout={handleLogout} />
       <div className="dashboard">
         <SideMenu onSelect={handleSelectMenu} />
