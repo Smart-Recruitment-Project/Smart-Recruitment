@@ -57,7 +57,7 @@ const Registration = () => {
 
   return (
     <div className="bg-slate-900 px-6 py-4 lg:px-8">
-      <div className="max-w-md mx-auto p-6">
+      <div className="max-w-md mx-auto p-6 border border-yellow-500 shadow-md shadow-yellow-600">
         <img
             alt="Your Company"
             src={logo}

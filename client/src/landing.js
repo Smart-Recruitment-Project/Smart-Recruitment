@@ -5,7 +5,7 @@ import jobs from './images/image1.png';
 
 export default function Landing() {
     return (
-        <body class="bg-slate-900 min-h-screen">
+        <div class="bg-slate-900 min-h-screen">
             <div class="">
                 <div class="flex flex-col">
                     <nav class="fixed top-0 left-0 bg-slate-900 min-w-full max-h-16 border-b border-gray-600 z-50">
@@ -35,7 +35,7 @@ export default function Landing() {
                     </div>
                     <div class="flex flex-col items-start m-10">
                     <h1 class="text-white text-4xl font-bold m-5">About</h1>
-                    <p class="text-white m-5"> wbdjhqbdkj
+                    <p class="text-white m-5 text-lg"> We believe that recruitment should be as dynamic and innovative as the world we live in. Our mission is to revolutionize the hiring process by leveraging cutting-edge technology, data-driven insights, and a deep understanding of human potential. We are committed to making recruitment smarter, faster, and more personalized. Whether you’re an employer looking for the next superstar or a job seeker aiming for your dream role, our platform empowers you to achieve your goals. We are not just a recruitment service; we are your partner in building a better future.
                     </p>
                     </div>
                     <div class="flex flex-col items-start m-10">
@@ -61,6 +61,6 @@ export default function Landing() {
                     </div>
                 </div>
             </div>
-        </body>
+        </div>
     )
 }
