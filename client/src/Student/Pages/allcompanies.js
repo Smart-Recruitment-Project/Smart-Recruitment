@@ -1,64 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useLocation } from "react-router-dom";
 
-export default function allcompanies() {
-    const sampleFeedData = [
-        {
-            jobtitle: 'Software Engineer',
-            jobdescription: 'Develop and maintain software applications.',
-            companyname: 'ABC Corp',
-            posteddate: '2024-08-24',
-            deadline: '2024-09-23'
-        },
-        {
-            jobtitle: 'DevOps Engineer',
-            jobdescription: 'Manage infrastructure and deployment processes.',
-            companyname: 'XYZ Inc',
-            posteddate: '2024-08-31',
-            deadline: '2024-10-23'
-        },
-        {
-            jobtitle: 'ML Engineer',
-            jobdescription: 'Work on machine learning models and algorithms.',
-            companyname: 'DataCorp',
-            posteddate: '2024-08-31',
-            deadline: '2024-10-23'
-        },
-        {
-            jobtitle: 'Frontend Developer',
-            jobdescription: 'Develop user interfaces with modern frameworks.',
-            companyname: 'Tech Solutions',
-            posteddate: '2024-08-30',
-            deadline: '2024-10-10'
-        },
-        {
-            jobtitle: 'Data Scientist',
-            jobdescription: 'Analyze data and build predictive models.',
-            companyname: 'Analytics Ltd',
-            posteddate: '2024-09-01',
-            deadline: '2024-11-15'
-        },
-        {
-            jobtitle: 'Marketing Analyst',
-            jobdescription: 'Analyze market trends and data to support marketing strategies.',
-            companyname: 'BizCorp',
-            posteddate: '2024-09-05',
-            deadline: '2024-12-01'
-        },
-        {
-            jobtitle: 'Backend Developer',
-            jobdescription: 'Develop and maintain server-side logic and databases.',
-            companyname: 'CodeFactory',
-            posteddate: '2024-09-03',
-            deadline: '2024-11-10'
-        },
-        {
-            jobtitle: 'Product Manager',
-            jobdescription: 'Oversee product development from conception to launch.',
-            companyname: 'InnovateTech',
-            posteddate: '2024-08-29',
-            deadline: '2024-10-05'
-        }
-    ];
+const BPORT = process.env.REACT_APP_BPORT || 8000;
+
 function Companydata({ jobtitle, jobdescription, companyname, posteddate, deadline }) {
     return (
         <div className="flex bg-white rounded-lg shadow-md p-4 m-4 items-center">
@@ -80,23 +25,69 @@ function Companydata({ jobtitle, jobdescription, companyname, posteddate, deadli
         </div>
     );
 }
+
 function CompanyContainer({ feedData }) {
     return (
         <div className="max-w-xl mx-auto">
             {feedData.map((item, index) => (
                 <Companydata
                     key={index}
-                    jobtitle={item.jobtitle}
-                    jobdescription={item.jobdescription}
-                    companyname={item.companyname}
-                    posteddate={item.posteddate}
-                    deadline={item.deadline}
+                    jobtitle={item.job_title}
+                    jobdescription={item.job_description}
+                    companyname={item.company_name}
+                    posteddate={item.posting_date}
+                    deadline={item.application_deadline}
                 />
             ))}
         </div>
     );
 }
-  return (
-    <div><CompanyContainer feedData={sampleFeedData}/></div>
-  )
+
+export default function Allcompanies() {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const username = queryParams.get("username");
+
+    const [skill, setSkill] = useState('');
+    const [CGPA, setCGPA] = useState('');
+    const [marks, setMarks] = useState('');
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fetchSkills = async () => {
+            try {
+                const response = await axios.get(`http://localhost:${BPORT}/getstudentskills`, { params: { "username": username } });
+                const skillsData = response.data.skills[0]; 
+                setSkill(skillsData.skills); 
+                setCGPA(skillsData.CGPA);
+                setMarks(skillsData["12_marks"]);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        if (username) fetchSkills();
+    }, [username]);
+
+    //console.log(skill, CGPA, marks); 
+
+    useEffect(() => {
+        const fetchCompanies = async () => {
+            try {
+                const response = await axios.post(`http://localhost:${BPORT}/getcompanies`, {
+                    skills: skill,
+                    marks: marks,
+                    cgpa: CGPA
+                });
+                setData(response.data.companies);
+                console.log(response.data.companies);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchCompanies();
+    }, [CGPA, marks, skill]);
+    
+    return (
+        <div><CompanyContainer feedData={data} /></div>
+    );
 }

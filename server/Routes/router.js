@@ -39,7 +39,7 @@ router.post('/register', (req, res) => {
 router.post('/addRegistration', (req, res) => {
     const { username,FirstName, LastName, College, year_of_study, contact_info } = req.body;
     const name = `${FirstName} ${LastName}`;
-    console.log("Received username:", username);
+    //console.log("Received username:", username);
 
     if (!username) {
         return res.status(422).json({ error: "Username is required" });
@@ -182,7 +182,7 @@ router.get('/feeds', (req, res) => {
 
 //get all studnets cpga ,marks,skills
 router.get('/getstudentskills',(req,res)=>{
-    const username=req.body.username;
+    const username=req.query.username;
     const query=`SELECT skills,12_marks,CGPA FROM students where username=?`;
     conn.query(query,[username],(error,results)=>{
         if(error){
@@ -196,12 +196,12 @@ router.get('/getstudentskills',(req,res)=>{
 
 
 //get all eligible companies
-router.get('/getcompanies', (req, res) => {
+router.post('/getcompanies', (req, res) => {
     const cgpa = req.body.cgpa;
     const skills = req.body.skills;
     const marks = req.body.marks;
     const array = skills.toLowerCase().split(/[\s,]+/).filter(Boolean); 
-    const skillConditions = array.map(skill => `skill LIKE '%${skill}%'`).join(' AND ');
+    const skillConditions = array.map(skill => `skill LIKE '%${skill}%'`).join(' OR ');
     console.log(skillConditions);
     const query = `
     SELECT company_id,job_title,job_description,posting_date,application_deadline FROM jobs 
