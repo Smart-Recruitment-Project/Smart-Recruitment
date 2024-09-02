@@ -78,10 +78,35 @@ function App() {
             headline: 'Library Hours Update',
             content: 'The library will be open from 8 AM to 10 PM starting next week.',
             time: '5 hours ago',
+        },
+        {
+            avatarUrl: '',
+            employeeName: 'John Doe',
+            headline: 'Upcoming Exam Schedule',
+            content: 'The exam schedule for the upcoming semester has been released. Please check the portal for details.',
+            time: '2 hours ago',
+        },
+        {
+            avatarUrl: '',
+            employeeName: 'Jane Smith',
+            headline: 'Library Hours Update',
+            content: 'The library will be open from 8 AM to 10 PM starting next week.',
+            time: '5 hours ago',
+        },{
+            avatarUrl: '',
+            employeeName: 'Jane Smith',
+            headline: 'Library Hours Update',
+            content: 'The library will be open from 8 AM to 10 PM starting next week.',
+            time: '5 hours ago',
+        },{
+            avatarUrl: '',
+            employeeName: 'Jane Smith',
+            headline: 'Library Hours Update',
+            content: 'The library will be open from 8 AM to 10 PM starting next week.',
+            time: '5 hours ago',
         }
     
-      ];
-      */
+      ];*/
     return (
         <div>
             <FeedContainer feedData={data} />

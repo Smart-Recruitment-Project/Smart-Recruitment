@@ -3,6 +3,6 @@ import FeedItem from '../components/FeedItem'
 
 export default function  feed() {
   return (
-    <div> <FeedItem/> </div>
+    <div class=""> <FeedItem/> </div>
   )
 }

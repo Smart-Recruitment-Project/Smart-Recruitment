@@ -87,7 +87,45 @@ export default function Allcompanies() {
         fetchCompanies();
     }, [CGPA, marks, skill]);
     
+    const SampleData = [
+        {
+          job_title: "Software Engineer",
+          job_description: "Develop and maintain web applications using JavaScript frameworks.",
+          company_name: "Tech Solutions Inc.",
+          posting_date: "2024-09-01",
+          application_deadline: "2024-09-15"
+        },
+        {
+          job_title: "Data Analyst",
+          job_description: "Analyze and interpret complex data to help companies make better decisions.",
+          company_name: "DataCorp",
+          posting_date: "2024-08-25",
+          application_deadline: "2024-09-10"
+        },
+        {
+          job_title: "UX/UI Designer",
+          job_description: "Design user-friendly interfaces for mobile and web applications.",
+          company_name: "Creative Design Studio",
+          posting_date: "2024-08-30",
+          application_deadline: "2024-09-14"
+        },
+        {
+          job_title: "Project Manager",
+          job_description: "Oversee project development from initiation to closure, ensuring timely delivery.",
+          company_name: "Global Enterprises",
+          posting_date: "2024-08-20",
+          application_deadline: "2024-09-05"
+        },
+        {
+          job_title: "Cybersecurity Specialist",
+          job_description: "Implement security measures to protect company data from cyber threats.",
+          company_name: "SecureTech",
+          posting_date: "2024-09-03",
+          application_deadline: "2024-09-20"
+        }
+      ];      
+    
     return (
-        <div><CompanyContainer feedData={data} /></div>
+        <div><CompanyContainer feedData={SampleData} /></div>
     );
 }
