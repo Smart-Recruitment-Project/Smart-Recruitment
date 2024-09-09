@@ -55,39 +55,45 @@ export default function Allcompanies() {
 
     useEffect(() => {
         const fetchSkills = async () => {
-            try {
-                const response = await axios.get(`http://localhost:${BPORT}/getstudentskills`, { params: { "username": username } });
-                const skillsData = response.data.skills[0]; 
-                setSkill(skillsData.skills); 
-                setCGPA(skillsData.CGPA);
-                setMarks(skillsData["12_marks"]);
-            } catch (error) {
-                console.log(error);
-            }
+          try {
+            const token = localStorage.getItem('token'); // Get token from local storage
+            const response = await axios.get(`http://localhost:${BPORT}/getstudentskills`, {
+              params: { "username": username },
+              headers: { Authorization: `Bearer ${token}` } // Include token in headers
+            });
+            const skillsData = response.data.skills[0]; 
+            setSkill(skillsData.skills); 
+            setCGPA(skillsData.CGPA);
+            setMarks(skillsData["12_marks"]);
+          } catch (error) {
+            console.log(error);
+          }
         };
         if (username) fetchSkills();
-    }, [username]);
-
+      }, [username]);
     //console.log(skill, CGPA, marks); 
 
     useEffect(() => {
         const fetchCompanies = async () => {
-            try {
-                const response = await axios.post(`http://localhost:${BPORT}/getcompanies`, {
-                    skills: skill,
-                    marks: marks,
-                    cgpa: CGPA
-                });
-                setData(response.data.companies);
-                console.log(response.data.companies);
-            } catch (error) {
-                console.log(error);
-            }
+          try {
+            const token = localStorage.getItem('token'); 
+            const response = await axios.post(`http://localhost:${BPORT}/getcompanies`, {
+              skills: skill,
+              marks: marks,
+              cgpa: CGPA
+            }, {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            setData(response.data.companies);
+            console.log(response.data.companies);
+          } catch (error) {
+            console.log(error);
+          }
         };
         fetchCompanies();
-    }, [CGPA, marks, skill]);
+      }, [CGPA, marks, skill]);
     
-    const SampleData = [
+    /*const SampleData = [
         {
           job_title: "Software Engineer",
           job_description: "Develop and maintain web applications using JavaScript frameworks.",
@@ -124,8 +130,8 @@ export default function Allcompanies() {
           application_deadline: "2024-09-20"
         }
       ];      
-    
+    */
     return (
-        <div><CompanyContainer feedData={SampleData} /></div>
+        <div><CompanyContainer feedData={data} /></div>
     );
 }

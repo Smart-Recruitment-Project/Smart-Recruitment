@@ -43,10 +43,8 @@ function App() {
     const [data,setData]=useState([]);
     useEffect(()=>{
         const fetchData=async()=>{
-            try{const token = localStorage.getItem('token'); 
-                const response = await axios.get(`http://localhost:${BPORT}/feeds`, {
-                  headers: { Authorization: `Bearer ${token}` } 
-                });
+            try{
+                const response=await axios.get(`http://localhost:${BPORT}/feeds`);
                 setData(response.data.feeds);
             }catch(error){
                 console.log(error);
@@ -109,9 +107,55 @@ function App() {
         }
     
       ];*/
+
+
+      const [headline, setHeadline] = useState('');
+     const [feed, setFeed] = useState('');
+
+      const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log('Headline:', headline);
+      console.log('Feed:', feed);
+      setHeadline('');
+      setFeed('');
+      };
+
     return (
         <div>
-            <FeedContainer feedData={data} />
+            <form onSubmit={handleSubmit}>
+                    <div className="mb-4">
+                      <label className="text-2xl font-bold text-white flex-row">
+                        Add New Announcement
+                      </label>
+                    </div>
+                    <div className="mb-4">
+                      <input
+                        type="text"
+                        className="border border-gray-300 rounded-lg p-2 w-96 justify-center text-black"
+                        placeholder="Headline"
+                        value={headline}
+                        onChange={(e) => setHeadline(e.target.value)}
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <input
+                        type="text"
+                        className="border border-gray-300 rounded-lg p-10 w-auto justify-center text-black"
+                        placeholder="Feed"
+                        value={feed}
+                        onChange={(e) => setFeed(e.target.value)}
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <button
+                        type="submit"
+                        className="bg-yellow-300 hover:bg-yellow-400 text-white hover:text-black font-bold py-2 px-4 rounded"
+                      >
+                        Post
+                      </button>
+                    </div>
+                </form>
+                <FeedContainer feedData={data} />
         </div>
     );
 }

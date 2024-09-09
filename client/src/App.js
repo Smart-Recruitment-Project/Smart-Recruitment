@@ -4,6 +4,7 @@ import LoginForm from './login_signup/login.js';
 import Forgot from './login_signup/forgot.js';
 import RegistrationForm from './login_signup/registration.js';
 import SDashboard from './Student/components/SDashborad.js';
+import CollegeDash from './College/Components/CollegeDash.js';
 import Landing from './landing.js';
 import Addsignup from './login_signup/addregistration.js';
 import './index.css';
@@ -18,6 +19,7 @@ function App() {
           <Route path="/signup" element={<RegistrationForm />} />
           <Route path="/addRegistration" element={<Addsignup/>} />
           <Route path="/student-dashboard" element={<SDashboard/>} /> 
+          <Route path="/college-dashboard" element={<CollegeDash/>} />
         </Routes> 
       </BrowserRouter>
     </div>

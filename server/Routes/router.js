@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const conn = require('../db/Connection');
 const avatarUrl = 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200';
+const jwt = require('jsonwebtoken');
+const authenticateJWT = require('../middleware/jwtauth');
+const secretKey="manoj"
 
 
 
@@ -31,9 +34,6 @@ router.post('/register', (req, res) => {
         }
     });
 });
-
-
-
 
 // Add Registration
 router.post('/addRegistration', (req, res) => {
@@ -89,29 +89,24 @@ router.post('/login', async (req, res) => {
             if (error) {
                 return res.status(500).json({ error: "Database error" });
             }
-            const username=results[0].username;
             if (results.length > 0) {
+                const us_name = results[0].username;
                 if (password === results[0].password) {
-                    conn.query('SELECT role FROM users WHERE email = ?', [email], (error, results) => {
-                        if (error) {
-                            return res.status(500).json({ error: "Database error" });
-                        }
-                        if (results.length === 0) {
-                            return res.status(422).json({ error: "Invalid Email or Password" });
-                        }
-                        const role = results[0].role;
-                        
-                        console.log(results);
-                        if (role === 'Admin') {
-                            return res.status(200).json({ message: "Login Successful", redirect: "/admin-dashboard" ,username:username});
-                        } else if (role === 'Student') {
-                            return res.status(200).json({ message: "Login Successful", redirect: "/student-dashboard" ,username:username });
-                        } else if (role === 'CollegeEmployee') {
-                            return res.status(200).json({ message: "Login Successful", redirect: "/employee-dashboard" ,username:username });
-                        } else {
-                            return res.status(200).json({ message: "Login Successful", redirect: "/company-dashboard" ,username:username });
-                        }
-                    });
+                    const role = results[0].role;
+                    const token = jwt.sign({ email, role, username: us_name }, secretKey, { expiresIn: '1h' });
+
+                    let redirectUrl = '';
+                    if (role === 'Admin') {
+                        redirectUrl = "/admin-dashboard";
+                    } else if (role === 'Student') {
+                        redirectUrl = "/student-dashboard";
+                    } else if (role === 'CollegeEmployee') {
+                        redirectUrl = "/employee-dashboard";
+                    } else {
+                        redirectUrl = "/company-dashboard";
+                    }
+
+                    return res.status(200).json({ message: "Login Successful", token, redirect: redirectUrl, username: us_name });
                 } else {
                     return res.status(422).json({ error: "Invalid Email or Password" });
                 }
@@ -125,9 +120,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-
-//get all colleges
-
+// Get all colleges
 router.get('/colleges', (req, res) => {
     conn.query('SELECT college_name FROM colleges', (error, results) => {
         if (error) {
@@ -138,11 +131,8 @@ router.get('/colleges', (req, res) => {
     });
 });
 
-
-
-//get all feeds
-
-router.get('/feeds', (req, res) => {
+// Get all feeds
+router.get('/feeds', authenticateJWT, (req, res) => {
     conn.query('SELECT * FROM feeds', (error, results) => {
         if (error) {
             console.log(error);
@@ -170,7 +160,6 @@ router.get('/feeds', (req, res) => {
 
         Promise.all(dataPromises)
             .then(data => {
-                console.log(Array.isArray(data));
                 return res.status(200).json({ feeds: data });
             })
             .catch(error => {
@@ -180,54 +169,44 @@ router.get('/feeds', (req, res) => {
     });
 });
 
-//get all studnets cpga ,marks,skills
-router.get('/getstudentskills',(req,res)=>{
-    const username=req.query.username;
-    const query=`SELECT skills,12_marks,CGPA FROM students where username=?`;
-    conn.query(query,[username],(error,results)=>{
-        if(error){
-            console.log(error);
-            return res.status(500).json({error:"Database error"});
-        }
-        return res.status(200).json({skills:results});
-    });
-})
-
-
-
-//get all eligible companies
-router.post('/getcompanies', (req, res) => {
-    const cgpa = req.body.cgpa;
-    const skills = req.body.skills;
-    const marks = req.body.marks;
-    const array = skills.toLowerCase().split(/[\s,]+/).filter(Boolean); 
-    const skillConditions = array.map(skill => `skill LIKE '%${skill}%'`).join(' OR ');
-    console.log(skillConditions);
-    const query = `
-    SELECT company_id,job_title,job_description,posting_date,application_deadline FROM jobs 
-    WHERE CGPA <= ? 
-    AND 12_marks <= ? 
-    AND (${skillConditions})`;
-
-    conn.query(query,[cgpa,marks], (error, results) => {
+// Get student skills
+router.get('/getstudentskills', authenticateJWT, (req, res) => {
+    const username = req.query.username;
+    const query = 'SELECT skills, 12_marks, CGPA FROM students WHERE username = ?';
+    conn.query(query, [username], (error, results) => {
         if (error) {
             console.log(error);
             return res.status(500).json({ error: "Database error" });
         }
+        return res.status(200).json({ skills: results });
+    });
+});
+
+// Get eligible companies
+router.post('/getcompanies', authenticateJWT, (req, res) => {
+    const { cgpa, skills, marks } = req.body;
+    const skillArray = skills.toLowerCase().split(/[\s,]+/).filter(Boolean);
+    const skillConditions = skillArray.map(skill => `skill LIKE '%${skill}%'`).join(' OR ');
+
+    const query = `
+        SELECT company_id, job_title, job_description, posting_date, application_deadline 
+        FROM jobs 
+        WHERE CGPA <= ? 
+        AND 12_marks <= ? 
+        AND (${skillConditions})
+    `;
+
+    conn.query(query, [cgpa, marks], (error, results) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: "Database error" });
+        }
+
         if (results.length === 0) {
-            console.log("No companies found");
-            return res.status(200).json({ companies: [] });
-        }
-        
-        const eligibleJobs = results.filter(job => {
-            return array.every(skill => array.includes(skill));
-        });
-
-        if (eligibleJobs.length === 0) {
             return res.status(200).json({ companies: [] });
         }
 
-        const companyIds = eligibleJobs.map(job => job.company_id);
+        const companyIds = results.map(job => job.company_id);
         const companyQuery = 'SELECT company_id, company_name FROM companies WHERE company_id IN (?)';
 
         conn.query(companyQuery, [companyIds], (error, companyResults) => {
@@ -246,12 +225,9 @@ router.post('/getcompanies', (req, res) => {
                 company_name: companyMap[result.company_id]
             }));
 
-        return res.status(200).json({ companies: changeResults });
+            return res.status(200).json({ companies: changeResults });
+        });
     });
 });
-});
-
-
-
 
 module.exports = router;

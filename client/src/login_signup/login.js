@@ -23,6 +23,8 @@ function LoginForm() {
       });
       if (response.status === 200) {
         alert(response.data.message);
+        const token = response.data.token;
+        localStorage.setItem('token', token);
         const username = response.data.username;
         alert(username);
         navigate(response.data.redirect + `?username=${username}`);
