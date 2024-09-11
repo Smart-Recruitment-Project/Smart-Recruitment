@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import logo from '../images/logo.png';
 
 const Registration = () => {
   const [formData, setFormData] = useState({
@@ -56,13 +55,8 @@ const Registration = () => {
   };
 
   return (
-    <div className="bg-slate-900 px-6 py-4 lg:px-8">
-      <div className="max-w-md mx-auto p-6 border border-yellow-500 shadow-md shadow-yellow-600">
-        <img
-            alt="Your Company"
-            src={logo}
-            className="mx-auto h-16 w-auto"
-          />
+    <div className="bg-slate-900 px-6 py-12 lg:px-8">
+      <div className="max-w-md mx-auto p-6">
         <h2 className="text-2xl font-bold text-center mb-6 text-white">
           Student Registration Form
         </h2>
