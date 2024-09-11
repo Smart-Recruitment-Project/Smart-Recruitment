@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {useState,useEffect} from 'react';
+import {useLocation} from 'react-router-dom';
 const BPORT=process.env.REACT_APP_BPORT||8000;
 //const FPORT=process.env.REACT_APP_FPORT||3000;
 
@@ -44,7 +45,10 @@ function App() {
     useEffect(()=>{
         const fetchData=async()=>{
             try{
-                const response=await axios.get(`http://localhost:${BPORT}/feeds`);
+                const token = localStorage.getItem('token');
+                const response=await axios.get(`http://localhost:${BPORT}/feeds`,{
+                    headers: { Authorization: `Bearer ${token}` } 
+                  });
                 setData(response.data.feeds);
             }catch(error){
                 console.log(error);
@@ -111,11 +115,27 @@ function App() {
 
       const [headline, setHeadline] = useState('');
      const [feed, setFeed] = useState('');
+     const location = useLocation();
 
-      const handleSubmit = (e) => {
+      const handleSubmit = async(e) => {
       e.preventDefault();
-      console.log('Headline:', headline);
-      console.log('Feed:', feed);
+      try {
+        const queryParams = new URLSearchParams(location.search);
+        const username = queryParams.get("username");
+        const response = await axios.post(`http://localhost:${BPORT}/postfeed`,{
+            headline:headline,
+            feed:feed,
+            username:username
+        });
+        if (response.status === 200) {
+          alert(response.data.message);
+        } else {
+          alert(response.data.error);
+        }
+      } catch (error) {
+        console.error("There was an error in posting feed!", error);
+        alert("something Gone Wrong!!");
+      }
       setHeadline('');
       setFeed('');
       };

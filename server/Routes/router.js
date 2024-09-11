@@ -101,7 +101,7 @@ router.post('/login', async (req, res) => {
                     } else if (role === 'Student') {
                         redirectUrl = "/student-dashboard";
                     } else if (role === 'CollegeEmployee') {
-                        redirectUrl = "/employee-dashboard";
+                        redirectUrl = "/college-dashboard";
                     } else {
                         redirectUrl = "/company-dashboard";
                     }
@@ -228,6 +228,38 @@ router.post('/getcompanies', authenticateJWT, (req, res) => {
             return res.status(200).json({ companies: changeResults });
         });
     });
+});
+
+
+//feed post
+router.post('/postfeed',(req,res)=>{
+    const {headline,feed,username}=req.body;
+    if ((!headline || !feed)) {
+        return res.status(422).json({ error: "Fill all data" });
+    }
+    try{
+    conn.query('SELECT employee_id FROM collegeemployees WHERE username = ?', [username], (error, results) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: "Database error" });
+        }
+        const employee_id = results[0].employee_id;
+        const feed_date=new Date();
+        conn.query(
+            'INSERT INTO feeds (employee_id, feed_date, feed_content, feed_headline) VALUES (?, ?, ?, ?)', 
+            [employee_id, feed_date, feed, headline], (error, results) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ error: "Database error" });
+            } else {
+                return res.status(200).json({ message: "PostedSuceesfully" });
+            }
+        });
+    });}
+    catch (error) {
+        res.status(500).json("Internal Server Error");
+    }
+    
 });
 
 module.exports = router;
