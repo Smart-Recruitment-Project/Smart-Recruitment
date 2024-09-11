@@ -4,23 +4,20 @@ import { useLocation } from "react-router-dom";
 
 const BPORT = process.env.REACT_APP_BPORT || 8000;
 
-function Companydata({ jobtitle, jobdescription, companyname, posteddate, deadline }) {
+function Companydata({ jobtitle, jobdescription, companyname, applieddate}) {
     return (
-        <div className="flex flex-col bg-white rounded-lg shadow-md p-4 m-4 ml-0 w-full">
+        <div className="flex flex-col bg-white rounded-lg shadow-md p-4 m-4 w-full">
             <div className="flex-grow">
                 <div className="font-bold text-black text-lg mb-1">{jobtitle}</div>
                 <div className="text-sm text-black mb-2">{companyname}</div>
                 <div className="text-sm text-black mb-2">{jobdescription}</div>
-                <div className="text-xs text-black mb-2">Posted on: {posteddate}</div>
-                <div className="text-xs text-black mb-2">Deadline: {deadline}</div>
+                <div className="text-xs text-black mb-2">Applied on: {applieddate}</div>
             </div>
             <div className="ml-auto">
-                <button className="bg-blue-950  text-white text-xs font-bold py-2 px-4 rounded hover:bg-red-700 w-fit">
-                    Apply
+                <button className="bg-blue-950 text-white text-xs font-bold py-2 px-4 rounded mb-2 hover:bg-red-700 w-fit">
+                    Track Progress
                 </button>
-                <button className="bg-yellow-400 ml-5 text-black text-xs font-bold py-2 px-4 rounded hover:bg-red-700 hover:text-white w-fit">
-                    View More
-                </button>
+                
             </div>
         </div>
     );
@@ -35,8 +32,7 @@ function CompanyContainer({ feedData }) {
                     jobtitle={item.job_title}
                     jobdescription={item.job_description}
                     companyname={item.company_name}
-                    posteddate={item.posting_date}
-                    deadline={item.application_deadline}
+                    applieddate={item.applied_on}
                 />
             ))}
         </div>
@@ -93,43 +89,45 @@ export default function Allcompanies() {
         fetchCompanies();
       }, [CGPA, marks, skill]);
     
-    const SampleData = [
+      const SampleData = [
         {
-          job_title: "Software Engineer",
-          job_description: "Develop and maintain web applications using JavaScript frameworks.",
-          company_name: "Tech Solutions Inc.",
-          posting_date: "2024-09-01",
-          application_deadline: "2024-09-15"
+            job_title: "Software Engineer",
+            job_description: "Develop and maintain web applications using JavaScript frameworks.",
+            company_name: "Tech Solutions Inc.",
+            applied_on: "2024-09-08"
         },
         {
-          job_title: "Data Analyst",
-          job_description: "Analyze and interpret complex data to help companies make better decisions.",
-          company_name: "DataCorp",
-          posting_date: "2024-08-25",
-          application_deadline: "2024-09-10"
+            job_title: "Frontend Developer",
+            job_description: "Design user-friendly interfaces and collaborate with UX teams.",
+            company_name: "Creative Web Ltd.",
+            applied_on: "2024-08-25"
         },
         {
-          job_title: "UX/UI Designer",
-          job_description: "Design user-friendly interfaces for mobile and web applications.",
-          company_name: "Creative Design Studio",
-          posting_date: "2024-08-30",
-          application_deadline: "2024-09-14"
+            job_title: "Backend Developer",
+            job_description: "Build and maintain server-side applications and databases.",
+            company_name: "DataCraft Systems",
+            applied_on: "2024-07-30"
         },
         {
-          job_title: "Project Manager",
-          job_description: "Oversee project development from initiation to closure, ensuring timely delivery.",
-          company_name: "Global Enterprises",
-          posting_date: "2024-08-20",
-          application_deadline: "2024-09-05"
+            job_title: "DevOps Engineer",
+            job_description: "Manage cloud infrastructure and CI/CD pipelines for continuous integration.",
+            company_name: "CloudMasters",
+            applied_on: "2024-09-01"
         },
         {
-          job_title: "Cybersecurity Specialist",
-          job_description: "Implement security measures to protect company data from cyber threats.",
-          company_name: "SecureTech",
-          posting_date: "2024-09-03",
-          application_deadline: "2024-09-20"
+            job_title: "Full Stack Developer",
+            job_description: "Work on both frontend and backend features for enterprise-level applications.",
+            company_name: "InnovateX Solutions",
+            applied_on: "2024-08-15"
+        },
+        {
+            job_title: "Mobile App Developer",
+            job_description: "Develop and optimize mobile applications for iOS and Android platforms.",
+            company_name: "Appify Inc.",
+            applied_on: "2024-09-03"
         }
-      ];      
+    ];
+          
     
     return (
         <div><CompanyContainer feedData={SampleData} /></div>
