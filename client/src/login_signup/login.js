@@ -42,7 +42,7 @@ function LoginForm() {
 
   return (
     <body class="flex bg-slate-900 h-screen min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm rounded-lg justify-center items-center p-6 bg-[#2f344a]">
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm border border-gray-500 rounded-lg justify-center items-center p-6 bg-[#272a3a]">
           <img
             alt="Your Company"
             src={logo}

@@ -7,7 +7,7 @@ import Appliedcompany from '../Pages/appliedcompany.js'
 export default function MainContent({ selectedMenu }) {
   return (
     <div
-      className="bg-[#2f344a] ml-5 mr-5 w-full text-white border-r border-gray-600 rounded-lg flex justify-center items-start"
+      className="bg-[#272a3a] ml-5 mr-5 w-full text-white border-gray-600 rounded-lg flex justify-center items-start"
       style={{ maxHeight: 'calc(100vh - 10rem)', overflowY: 'auto' }}
     >
       {selectedMenu === 'Home' && <Feed />}
