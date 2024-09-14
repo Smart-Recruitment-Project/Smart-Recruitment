@@ -7,7 +7,7 @@ const BPORT=process.env.REACT_APP_BPORT||8000;
 
 function FeedItem({ avatarUrl, employeeName, headline, content, time }) {
     return (
-        <div className="flex bg-white rounded-lg shadow-md p-4 m-4 items-center">
+        <div className="flex bg-white rounded-lg shadow-md p-4 m-4 ml-0 items-center w-full">
             <div
                 className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-300 mr-4"
                 style={{ backgroundImage: `url(${avatarUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
@@ -141,26 +141,26 @@ function App() {
       };
 
     return (
-        <div>
+        <div className='w-[80%]'>
             <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                      <label className="text-2xl font-bold text-white flex-row">
+                    <div className="mb-4 mt-4 w-full">
+                      <label className="text-xl font-semibold text-white ">
                         Add New Announcement
                       </label>
                     </div>
                     <div className="mb-4">
                       <input
                         type="text"
-                        className="border border-gray-300 rounded-lg p-2 w-96 justify-center text-black"
+                        className="border border-gray-300 rounded-md w-full p-1 justify-center text-black"
                         placeholder="Headline"
                         value={headline}
                         onChange={(e) => setHeadline(e.target.value)}
                       />
                     </div>
                     <div className="mb-4">
-                      <input
-                        type="text"
-                        className="border border-gray-300 rounded-lg p-10 w-auto justify-center text-black"
+                      <textarea
+                        rows="5"
+                        className="border border-gray-300 rounded-md w-full p-1 justify-center text-black"
                         placeholder="Feed"
                         value={feed}
                         onChange={(e) => setFeed(e.target.value)}
@@ -169,7 +169,7 @@ function App() {
                     <div className="mb-4">
                       <button
                         type="submit"
-                        className="bg-yellow-300 hover:bg-yellow-400 text-white hover:text-black font-bold py-2 px-4 rounded"
+                        className="bg-yellow-300 hover:bg-red-700 text-black hover:text-white font-bold py-2 px-4 rounded"
                       >
                         Post
                       </button>
