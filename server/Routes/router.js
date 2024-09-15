@@ -94,6 +94,7 @@ router.post('/login', async (req, res) => {
                 if (password === results[0].password) {
                     const role = results[0].role;
                     const token = jwt.sign({ email, role, username: us_name }, secretKey, { expiresIn: '1h' });
+                    console.log(token);
 
                     let redirectUrl = '';
                     if (role === 'Admin') {
@@ -260,6 +261,154 @@ router.post('/postfeed',(req,res)=>{
         res.status(500).json("Internal Server Error");
     }
     
+});
+
+//add Companies
+router.post('/addcompany', authenticateJWT, async (req, res) => {
+    const { username, company_name, industry_type } = req.body;
+    if (!username || !company_name || !industry_type) {
+        return res.status(422).json({ error: "Fill all data" });
+    }
+
+    try {
+        const getCollegeAndEmployeeId = (username) => {
+            return new Promise((resolve, reject) => {
+                conn.query('SELECT college_id, employee_id FROM collegeemployees WHERE username = ?', [username], (error, results) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    if (results.length > 0) {
+                        const { college_id, employee_id } = results[0];
+                        resolve({ college_id, employee_id });
+                    } else {
+                        resolve(null);
+                    }
+                });
+            });
+        };
+
+        const result = await getCollegeAndEmployeeId(username);
+        if (!result) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        const { college_id, employee_id } = result;
+
+        const checkCompanyExists = (college_id, company_name) => {
+            return new Promise((resolve, reject) => {
+                const q = "SELECT * FROM companies WHERE college_id = ? AND company_name = ?";
+                conn.query(q, [college_id, company_name], (error, results) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    resolve(results.length > 0);
+                });
+            });
+        };
+
+        const companyExists = await checkCompanyExists(college_id, company_name);
+        if (companyExists) {
+            return res.status(409).json({ error: "Company already exists" });
+        }
+
+        const addCompany = (college_id, employee_id, company_name, industry_type) => {
+            return new Promise((resolve, reject) => {
+                const q = "INSERT INTO companies (college_id, added_by_employee_id, company_name, industry_type) VALUES (?, ?, ?, ?)";
+                conn.query(q, [college_id, employee_id, company_name, industry_type], (error, results) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    resolve(results);
+                });
+            });
+        };
+
+        await addCompany(college_id, employee_id, company_name, industry_type);
+        return res.status(200).json({ message: "Company Added Successfully" });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+//view Companies
+router.get('/viewcompanies', authenticateJWT, async (req, res) => {
+    try {
+        const getCompanies = () => {
+            return new Promise((resolve, reject) => {
+                const q = "SELECT * FROM companies";
+                conn.query(q, (error, results) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    resolve(results);
+                });
+            });
+        };
+
+        const companies = await getCompanies();
+        return res.status(200).json({ companies });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+
+// add CompanyEmployee By College
+router.post('/addcompanyemployee', authenticateJWT, async (req, res) => {
+    const { username, company_id, name, email, password } = req.body;
+    if (!username || !company_id || !name || !email || !password ) {
+        return res.status(422).json({ error: "Fill all data" });
+    }
+    try {
+        const checkUserExists = (username) => {
+            return new Promise((resolve, reject) => {
+                conn.query('SELECT * FROM users WHERE username = ?', [username], (error, results) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    resolve(results.length > 0);
+                });
+            });
+        };
+        const addUser = (username, email, hashedPassword) => {
+            return new Promise((resolve, reject) => {
+                const q = "INSERT INTO users (username, email, password, role, created_at) VALUES (?, ?, ?, 'CompanyEmployee', NOW())";
+                conn.query(q, [username, email, hashedPassword], (error, results) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    resolve(results);
+                });
+            });
+        };
+
+        const addEmployee = (username, company_id, name, email) => {
+            return new Promise((resolve, reject) => {
+                const q = "INSERT INTO companyemployees (company_id, username, name, contact_info) VALUES (?, ?, ?, ?)";
+                conn.query(q, [company_id, username, name, email], (error, results) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    resolve(results);
+                });
+            });
+        };
+        const userExists = await checkUserExists(username);
+        if (userExists) {
+            return res.status(400).json({ error: "User already exists" });
+        }
+        const hashedPassword = password;
+        await addUser(username, email, hashedPassword);
+        await addEmployee(username, company_id, name, email);
+        return res.status(200).json({ message: "Employee Added Successfully" });
+
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
 });
 
 module.exports = router;
