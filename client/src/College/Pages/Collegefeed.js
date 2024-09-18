@@ -24,7 +24,7 @@ function FeedItem({ avatarUrl, employeeName, headline, content, time }) {
 
 function FeedContainer({ feedData }) {
     return (
-        <div className="max-w-xl mx-auto">
+        <div className="w-full mx-auto">
             {feedData.map((item, index) => (
                 <FeedItem
                     key={index}
@@ -169,7 +169,7 @@ function App() {
                     <div className="mb-4">
                       <button
                         type="submit"
-                        className="bg-yellow-300 hover:bg-red-700 text-black hover:text-white font-bold py-2 px-4 rounded"
+                        className="bg-yellow-300 hover:bg-red-500 text-black hover:text-white font-bold py-2 px-4 rounded"
                       >
                         Post
                       </button>

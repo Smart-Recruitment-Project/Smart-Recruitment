@@ -6,7 +6,7 @@ const BPORT=process.env.REACT_APP_BPORT||8000;
 
 function FeedItem({ avatarUrl, employeeName, headline, content, time }) {
     return (
-        <div className="flex bg-white rounded-lg shadow-md p-4 m-4 items-center">
+        <div className="flex bg-white w-full rounded-lg shadow-md p-4 my-4 items-center">
             <div
                 className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-300 mr-4"
                 style={{ backgroundImage: `url(${avatarUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
@@ -23,7 +23,7 @@ function FeedItem({ avatarUrl, employeeName, headline, content, time }) {
 
 function FeedContainer({ feedData }) {
     return (
-        <div className="max-w-xl mx-auto">
+        <div className="max-w-full mx-auto">
             {feedData.map((item, index) => (
                 <FeedItem
                     key={index}

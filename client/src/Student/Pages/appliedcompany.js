@@ -14,7 +14,7 @@ function Companydata({ jobtitle, jobdescription, companyname, applieddate}) {
                 <div className="text-xs text-black mb-2">Applied on: {applieddate}</div>
             </div>
             <div className="ml-auto">
-                <button className="bg-blue-950 text-white text-xs font-bold py-2 px-4 rounded mb-2 hover:bg-red-700 w-fit">
+                <button className="bg-blue-950 text-white text-xs font-bold py-2 px-4 rounded mb-2 hover:bg-red-500 w-fit">
                     Track Progress
                 </button>
                 
